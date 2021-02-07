@@ -14,7 +14,8 @@ terraform {
     shared_credentials_file     = "access.key"
     skip_region_validation      = true
     skip_credentials_validation = true
+
     dynamodb_endpoint           = "https://docapi.serverless.yandexcloud.net/ru-central1/b1g0d9fnkcg0p56pie7g/etn00oae9bl6i6ice58f"
-    dynamodb_table              = "table287"
+    dynamodb_table              = "table184"
   }
 }

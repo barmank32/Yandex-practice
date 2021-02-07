@@ -1,0 +1,28 @@
+data "yandex_iam_service_account" "packer" {
+  name = "packer"
+}
+
+output "name" {
+  value = yandex_storage_bucket.backend
+}
+
+resource "yandex_iam_service_account_static_access_key" "sa-static-key" {
+  service_account_id = data.yandex_iam_service_account.packer.id
+  description        = "static access key for object storage"
+}
+
+resource "yandex_storage_bucket" "backend" {
+  bucket        = "tf-state-buckend"
+  force_destroy = true
+  access_key    = yandex_iam_service_account_static_access_key.sa-static-key.access_key
+  secret_key    = yandex_iam_service_account_static_access_key.sa-static-key.secret_key
+}
+
+resource "local_file" "access_key" {
+  content  = yandex_iam_service_account_static_access_key.sa-static-key.access_key
+  filename = "access_key.key"
+}
+resource "local_file" "secret_key" {
+  content  = yandex_iam_service_account_static_access_key.sa-static-key.secret_key
+  filename = "secret_key.key"
+}
